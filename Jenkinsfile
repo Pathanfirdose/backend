@@ -32,6 +32,17 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('SonarQube analysis') {
+            environment {
+                SCANNER_HOME = tool 'sonar-2.3' //scanner config
+            }
+            steps {
+                // sonar server injection
+                withSonarQubeEnv('sonar-2.3') {
+                    sh '$SCANNER_HOME/bin/sonar-scanner'
+                }
+            }
+        }
         stage('Docker build') {
             
             steps {
